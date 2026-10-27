@@ -1,12 +1,26 @@
 """Master profile storage: data/master_profile.md, seeded from references/ on first run."""
 
 import datetime
+import os
 import shutil
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_PATH = ROOT / "data" / "master_profile.md"
 SEED_PATH = ROOT / "references" / "master_profile.md"
+
+# Contact details live in .env, not in the profile file.
+PLACEHOLDERS = ("CONTACT_EMAIL", "CONTACT_PHONE")
+
+
+def _fill_placeholders(text):
+    for key in PLACEHOLDERS:
+        text = text.replace("{{" + key + "}}", os.getenv(key, ""))
+    return text
 
 
 def _ensure():
@@ -21,7 +35,8 @@ def load():
     if not PROFILE_PATH.exists():
         return None, None, None
     updated = datetime.datetime.fromtimestamp(PROFILE_PATH.stat().st_mtime)
-    return PROFILE_PATH.read_text(encoding="utf-8"), PROFILE_PATH.name, updated
+    text = _fill_placeholders(PROFILE_PATH.read_text(encoding="utf-8"))
+    return text, PROFILE_PATH.name, updated
 
 
 def save(text):
