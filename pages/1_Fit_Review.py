@@ -10,6 +10,14 @@ from core.jd_fetcher import fetch_jd
 ui.setup("Fit Review", "🎯")
 st.title("Fit Review")
 
+with st.expander("What do the scores mean?"):
+    rows = "".join(
+        f"<div style='margin-bottom:0.6rem'><span class='cc-badge {label}'>{label}</span> "
+        f"<span class='cc-muted'>{html.escape(help_text)}</span></div>"
+        for label, help_text in LABEL_HELP.items()
+    )
+    st.markdown(rows, unsafe_allow_html=True)
+
 profile = ui.profile_panel()
 
 url = st.text_input("Job posting URL (optional)")
