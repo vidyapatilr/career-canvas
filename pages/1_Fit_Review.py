@@ -10,13 +10,16 @@ from core.jd_fetcher import fetch_jd
 ui.setup("Fit Review", "🎯")
 st.title("Fit Review")
 
-with st.expander("What do the scores mean?"):
-    rows = "".join(
-        f"<div style='margin-bottom:0.6rem'><span class='cc-badge {label}'>{label}</span> "
-        f"<span class='cc-muted'>{html.escape(help_text)}</span></div>"
-        for label, help_text in LABEL_HELP.items()
-    )
-    st.markdown(rows, unsafe_allow_html=True)
+legend_rows = "".join(
+    f"<div style='margin-bottom:0.35rem'><span class='cc-badge {label}' style='font-size:0.75rem;padding:0.15rem 0.6rem'>{label}</span> "
+    f"<span class='cc-muted' style='font-size:0.78rem'>{html.escape(help_text)}</span></div>"
+    for label, help_text in LABEL_HELP.items()
+)
+st.markdown(
+    f"<div class='cc-legend'><div style='font-weight:700;margin-bottom:0.4rem;color:var(--cc-primary)'>"
+    f"What do the scores mean?</div>{legend_rows}</div>",
+    unsafe_allow_html=True,
+)
 
 profile = ui.profile_panel()
 

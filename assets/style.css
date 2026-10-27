@@ -8,6 +8,23 @@
 [data-testid="stAppViewContainer"] > .main,
 [data-testid="stMain"] { color: var(--cc-text); }
 
+/* Always-visible score legend, pinned to the top right of the viewport */
+.cc-legend {
+  position: fixed;
+  top: 3.2rem;
+  right: 1.2rem;
+  z-index: 999;
+  background: #FFFFFF;
+  border: 1px solid var(--cc-accent);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  width: 260px;
+  box-shadow: 0 4px 16px rgba(99, 85, 164, 0.15);
+}
+@media (max-width: 1150px) {
+  .cc-legend { position: static; width: auto; margin-bottom: 1rem; }
+}
+
 h1, h2, h3, h4,
 [data-testid="stHeading"] h1, [data-testid="stHeading"] h2, [data-testid="stHeading"] h3,
 [data-testid="stMarkdownContainer"] h4 { color: var(--cc-primary) !important; }
