@@ -45,11 +45,17 @@ title/dates on one line via a right-aligned tab stop, not a table.
 """
 
 import datetime
+import os
 
+from dotenv import load_dotenv
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
+
+load_dotenv()
+EMAIL = os.getenv("CONTACT_EMAIL", "")
+PHONE = os.getenv("CONTACT_PHONE", "")
 
 NAVY = RGBColor(0x1F, 0x38, 0x64)
 DARK = RGBColor(0x22, 0x22, 0x22)
@@ -73,7 +79,7 @@ EARLIER_EXPERIENCE_DEFAULT = [
 ]
 
 CONTACT_LINE = (
-    "Winter Park, FL   |   os.environ.get("CONTACT_PHONE", "")   |   os.environ.get("CONTACT_EMAIL", "")   |   "
+    f"Winter Park, FL   |   {PHONE}   |   {EMAIL}   |   "
     "https://linkedin.com/in/vidyapatilr   |   https://github.com/vidyapatilr"
 )
 
@@ -262,7 +268,7 @@ def build_cover_letter(path, company, re_line, paragraphs, date_str=None):
 
     # Header: name, location, phone and email
     _add_name(cl, "Vidya Rani Patil")
-    _add_body(cl, "Winter Park, FL   |   {{CONTACT_PHONE}}   |   {{CONTACT_EMAIL}}", space_after=0)
+    _add_body(cl, f"Winter Park, FL   |   {PHONE}   |   {EMAIL}", space_after=0)
     _add_empty(cl)
 
     _add_body(cl, date_str, space_after=0)

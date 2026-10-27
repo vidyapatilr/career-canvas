@@ -1,0 +1,53 @@
+:root {
+  --cc-primary: #6355A4;
+  --cc-accent: #A99DD4;
+  --cc-bg: #F5F4F9;
+  --cc-text: #2D2D2D;
+}
+
+h1, h2, h3 { color: var(--cc-primary); }
+
+[data-testid="stSidebar"] { border-right: 1px solid var(--cc-accent); }
+
+.cc-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cc-accent);
+  border-radius: 12px;
+  padding: 1.1rem 1.3rem;
+  margin: 0.6rem 0 1rem 0;
+}
+
+.cc-score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.cc-score-num {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--cc-primary);
+  line-height: 1;
+}
+
+.cc-badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  background: var(--cc-primary);
+}
+.cc-badge.Good { background: #7D70BE; }
+.cc-badge.Stretch { background: var(--cc-accent); color: var(--cc-text); }
+.cc-badge.Skip { background: #D9D5E8; color: var(--cc-text); }
+
+.cc-muted { color: #6B6880; font-size: 0.9rem; }
+
+.stButton > button, .stDownloadButton > button { border-radius: 8px; }
+.stButton > button:hover, .stDownloadButton > button:hover {
+  border-color: var(--cc-accent);
+  color: var(--cc-primary);
+}
