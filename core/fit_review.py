@@ -38,6 +38,15 @@ def label_for(score):
     return "Skip"
 
 
+LABEL_HELP = {
+    "Perfect": "85 to 100. A strong, ready-to-apply match on skills, domain, seniority, and education.",
+    "Good": "65 to 84. A solid match overall, with only small or phrasing-level gaps. Worth applying to.",
+    "Stretch": "45 to 64. Real gaps on some must-haves (often seniority, domain, or a specific skill). "
+    "Still worth applying if you want to grow into the role, but expect to be a longer shot.",
+    "Skip": "Below 45. Significant mismatch on the core requirements. Unlikely to be shortlisted.",
+}
+
+
 def review(profile, jd):
     user = f"MASTER PROFILE:\n{profile}\n\nJOB DESCRIPTION:\n{jd}"
     result = ask_json(SYSTEM, user, temperature=0)

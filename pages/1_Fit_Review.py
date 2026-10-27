@@ -4,7 +4,7 @@ import streamlit as st
 
 from core import ui
 from core.ai_client import AIError
-from core.fit_review import WEIGHTS, review
+from core.fit_review import LABEL_HELP, WEIGHTS, review
 from core.jd_fetcher import fetch_jd
 
 ui.setup("Fit Review", "🎯")
@@ -43,12 +43,14 @@ if fit and st.session_state.get("jd"):
         for g in fit.get("gaps", [])
     )
     subs = " · ".join(f"{k.replace('_', ' ').title()} {fit['subscores'][k]}/{cap}" for k, cap in WEIGHTS.items())
+    label_help = e(LABEL_HELP.get(fit["label"], ""))
     st.markdown(
         f"""<div class='cc-card'>
         <div class='cc-score'><span class='cc-score-num'>{fit['score']}</span>
         <span class='cc-badge {fit['label']}'>{fit['label']}</span></div>
+        <p class='cc-muted'>{label_help}</p>
         <div><b>{who}</b>{' · ' + e(fit['pay_range']) if fit.get('pay_range') else ''}</div>
-        <p class='cc-muted'>{subs}</p>
+        <p class='cc-muted'>Score breakdown: {subs}</p>
         <p>{e(fit.get('summary', ''))}</p>
         <b>Strengths</b><ul>{strengths}</ul>
         <b>Gaps</b><ul>{gaps}</ul>
