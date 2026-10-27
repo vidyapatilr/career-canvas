@@ -27,11 +27,11 @@ def profile_panel():
 
 
 def jd_panel(key):
-    """Use the JD from Fit Review if there is one, otherwise offer paste or upload."""
+    """Reuse the job description already entered elsewhere, otherwise offer paste or upload."""
     if st.session_state.get("jd"):
         fit = st.session_state.get("fit") or {}
         who = " at ".join(x for x in (fit.get("position"), fit.get("company")) if x)
-        st.caption(f"Using the job description from Fit Review{': ' + who if who else ''}.")
+        st.caption(f"Using the job description you already entered{': ' + who if who else ''}.")
         with st.expander("View job description"):
             st.text(st.session_state["jd"])
         if st.button("Use a different job description", key=f"{key}_clear"):
@@ -46,4 +46,7 @@ def jd_panel(key):
     jd = pasted.strip()
     if uploaded and not jd:
         jd = read_upload(uploaded).strip()
+    if jd:
+        # Share it immediately so other pages don't ask for it again.
+        st.session_state["jd"] = jd
     return jd, None

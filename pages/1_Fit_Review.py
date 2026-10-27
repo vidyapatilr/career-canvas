@@ -55,10 +55,8 @@ if fit and st.session_state.get("jd"):
         </div>""",
         unsafe_allow_html=True,
     )
-    c1, c2, c3 = st.columns(3)
-    if c1.button("Build Resume", use_container_width=True):
-        st.switch_page("pages/2_Resume_Builder.py")
-    if c2.button("Build Cover Letter", use_container_width=True):
-        st.switch_page("pages/3_Cover_Letter.py")
-    if c3.button("Add to Tracker", use_container_width=True):
+    c1, c2 = st.columns(2)
+    if c1.button("Build Resume / Cover Letter", use_container_width=True):
+        st.switch_page("pages/2_Resume_and_Cover_Letter.py")
+    if c2.button("Add to Tracker", use_container_width=True):
         st.switch_page("pages/5_Job_Tracker.py")

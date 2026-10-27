@@ -26,8 +26,7 @@ st.markdown("#### Where to start")
 
 TILES = [
     ("🎯", "Fit Review", "Score a JD against your profile.", "pages/1_Fit_Review.py"),
-    ("📝", "Resume Builder", "Generate a tailored .docx resume.", "pages/2_Resume_Builder.py"),
-    ("✉️", "Cover Letter", "Generate a tailored .docx cover letter.", "pages/3_Cover_Letter.py"),
+    ("📝", "Resume & Cover Letter", "Paste one JD, build both .docx files.", "pages/2_Resume_and_Cover_Letter.py"),
     ("📄", "Profile", "View or replace your master profile.", "pages/4_Profile.py"),
     ("📋", "Job Tracker", "Track every application.", "pages/5_Job_Tracker.py"),
 ]
