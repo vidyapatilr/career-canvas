@@ -5,9 +5,23 @@
   --cc-text: #2D2D2D;
 }
 
-h1, h2, h3 { color: var(--cc-primary); }
+h1, h2, h3, h4,
+[data-testid="stHeading"] h1, [data-testid="stHeading"] h2, [data-testid="stHeading"] h3,
+[data-testid="stMarkdownContainer"] h4 { color: var(--cc-primary) !important; }
 
-[data-testid="stSidebar"] { border-right: 1px solid var(--cc-accent); }
+[data-testid="stSidebar"] {
+  background: #ECE9F6 !important;
+  border-right: 1px solid var(--cc-accent);
+}
+[data-testid="stSidebarNav"] a[aria-current="page"] {
+  background: var(--cc-accent) !important;
+}
+[data-testid="stSidebarNav"] a[aria-current="page"] span { color: #FFFFFF !important; font-weight: 600; }
+
+[data-testid="stExpander"] details,
+[data-testid="stFileUploaderDropzone"],
+[data-testid="stTextArea"] textarea,
+[data-testid="stTextInput"] input { border-color: var(--cc-accent) !important; }
 
 .cc-card {
   background: #FFFFFF;
