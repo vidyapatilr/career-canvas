@@ -39,6 +39,15 @@ def load():
     return text, PROFILE_PATH.name, updated
 
 
+def load_raw():
+    """Return the profile source as stored on disk, with {{CONTACT_...}} placeholders
+    left intact, so editing it in the app doesn't bake in real contact info."""
+    _ensure()
+    if not PROFILE_PATH.exists():
+        return ""
+    return PROFILE_PATH.read_text(encoding="utf-8")
+
+
 def save(text):
     PROFILE_PATH.parent.mkdir(exist_ok=True)
     PROFILE_PATH.write_text(text, encoding="utf-8")
