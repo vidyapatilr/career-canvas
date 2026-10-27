@@ -23,20 +23,26 @@ st.markdown(
 
 profile = ui.profile_panel()
 
-url = st.text_input("Job posting URL (optional)")
+# Bumping this forces the URL and JD boxes to remount empty, since Streamlit
+# won't otherwise clear a widget's on-screen text once it's been filled in.
+st.session_state.setdefault("fit_form_version", 0)
+form_version = st.session_state["fit_form_version"]
+
+url = st.text_input("Job posting URL (optional)", key=f"fit_url_{form_version}")
 if st.button("Fetch from URL", disabled=not url.strip()):
     text = fetch_jd(url.strip())
     if text:
-        st.session_state["fit_paste"] = text
+        st.session_state[f"fit_paste_{form_version}"] = text
         st.success("Fetched the page. Check the text below and trim anything that isn't the JD.")
     elif "linkedin.com" in url.lower():
         st.error("LinkedIn blocks automatic fetching and shows a sign-in page instead, even for public-looking links. Please copy and paste the job description text below.")
     else:
         st.error("Could not read this page. It may require sign-in or load its content via JavaScript. Please paste the JD text.")
 
-jd = st.text_area("Job description", height=260, key="fit_paste").strip()
+jd = st.text_area("Job description", height=260, key=f"fit_paste_{form_version}").strip()
 
-if st.button("Review Fit", type="primary", disabled=not (jd and profile)):
+rc1, rc2 = st.columns([2, 1])
+if rc1.button("Review Fit", type="primary", disabled=not (jd and profile), use_container_width=True):
     with st.spinner("Reviewing fit..."):
         try:
             st.session_state["fit"] = review(profile, jd)
@@ -45,6 +51,13 @@ if st.button("Review Fit", type="primary", disabled=not (jd and profile)):
             st.session_state.pop("cover", None)
         except AIError as e:
             st.error(str(e))
+if rc2.button("Review another job", disabled=not st.session_state.get("fit"), use_container_width=True):
+    st.session_state.pop("fit", None)
+    st.session_state.pop("jd", None)
+    st.session_state.pop("resume", None)
+    st.session_state.pop("cover", None)
+    st.session_state["fit_form_version"] += 1
+    st.rerun()
 
 fit = st.session_state.get("fit")
 if fit and st.session_state.get("jd"):
