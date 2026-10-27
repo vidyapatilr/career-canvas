@@ -10,7 +10,7 @@ Judge fit only from the master profile. Do not inflate scores. Distinguish phras
 Score each rubric part as an integer from 0 up to its maximum:
 - skills (max 35): core technical skills and tools match
 - domain (max 20): domain match (healthcare, clinical, finance, data)
-- seniority (max 20): seniority and scope match
+- seniority (max 20): seniority and scope match. Judge this from the actual responsibilities, years required, and reporting structure described in the JD, not from the job title word alone. Titles are not standardized across industries: in banking and finance (e.g. Vice President, Assistant Vice President), the ladder usually runs Analyst, Associate, Vice President, Director, Managing Director, so "Vice President" there is typically a mid-career or senior individual-contributor level, not executive leadership. Don't penalize seniority just because a title sounds senior in a generic sense; check what the JD actually asks the person to own and how many years it requires.
 - education (max 15): required degree or certification met
 - nice_to_have (max 10): nice-to-have skills
 
