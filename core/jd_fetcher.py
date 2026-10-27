@@ -13,9 +13,26 @@ HEADERS = {
     )
 }
 
+# Sites known to serve a sign-in wall to anonymous/non-browser requests instead
+# of the posting itself. Skip the network call and fail clearly instead of
+# fetching a login page.
+BLOCKED_DOMAINS = ("linkedin.com",)
+
+# Phrases that show up near the top of a sign-in-wall page rather than a real
+# job posting. Catches login walls on sites not explicitly listed above too.
+LOGIN_WALL_SIGNALS = ("sign in to", "join now to", "welcome back", "forgot password", "sign in with")
+
+
+def _looks_like_login_wall(text):
+    head = text[:500].lower()
+    return any(signal in head for signal in LOGIN_WALL_SIGNALS)
+
 
 def fetch_jd(url):
-    """Return the page text, or None when the page can't be read or is too thin."""
+    """Return the page text, or None when the page can't be read, is too thin,
+    or is a sign-in wall instead of the actual posting."""
+    if any(domain in url.lower() for domain in BLOCKED_DOMAINS):
+        return None
     try:
         resp = requests.get(url, headers=HEADERS, timeout=20)
         resp.raise_for_status()
@@ -27,7 +44,9 @@ def fetch_jd(url):
     main = soup.find("main") or soup.find("article") or soup.body or soup
     lines = [ln.strip() for ln in main.get_text("\n").splitlines()]
     text = "\n".join(ln for ln in lines if ln)
-    return text if len(text) >= MIN_CHARS else None
+    if len(text) < MIN_CHARS or _looks_like_login_wall(text):
+        return None
+    return text
 
 
 def read_upload(uploaded):

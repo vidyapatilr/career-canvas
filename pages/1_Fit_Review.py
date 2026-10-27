@@ -29,8 +29,10 @@ if st.button("Fetch from URL", disabled=not url.strip()):
     if text:
         st.session_state["fit_paste"] = text
         st.success("Fetched the page. Check the text below and trim anything that isn't the JD.")
+    elif "linkedin.com" in url.lower():
+        st.error("LinkedIn blocks automatic fetching and shows a sign-in page instead, even for public-looking links. Please copy and paste the job description text below.")
     else:
-        st.error("Could not read this page. Please paste the JD text.")
+        st.error("Could not read this page. It may require sign-in or load its content via JavaScript. Please paste the JD text.")
 
 jd = st.text_area("Job description", height=260, key="fit_paste").strip()
 
