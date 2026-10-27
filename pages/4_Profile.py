@@ -15,7 +15,8 @@ if uploaded and st.session_state.get("profile_uploaded") != uploaded.file_id:
 text, name, updated = profile_store.load()
 if text:
     st.caption(profile_store.status_line(name, updated))
-    with st.container(height=600, border=True):
-        st.markdown(text)
+    with st.expander("View full profile"):
+        with st.container(height=600, border=True):
+            st.markdown(text)
 else:
     st.info("No profile yet. Upload your master_profile.md above.")
