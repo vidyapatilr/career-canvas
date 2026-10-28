@@ -23,20 +23,22 @@ Return JSON with exactly these keys:
 {{"company": "hiring company name from the JD", "position": "job title from the JD", "re_line": "", "paragraphs": ["", "", ""]}}"""
 
 
-def _user_prompt(profile, jd, fit, problems):
+def _user_prompt(profile, jd, fit, problems, feedback=None):
     parts = [f"MASTER PROFILE:\n{profile}", f"JOB DESCRIPTION:\n{jd}"]
     if fit:
         slim = {k: fit.get(k) for k in ("company", "position", "strengths", "summary")}
         parts.append(f"FIT REVIEW RESULT:\n{json.dumps(slim, indent=2)}")
+    if feedback:
+        parts.append(f"THE USER ASKED FOR THESE CHANGES TO THE PREVIOUS DRAFT. Apply them:\n{feedback}")
     if problems:
         parts.append("YOUR PREVIOUS DRAFT BROKE THESE RULES. Fix every one:\n- " + "\n- ".join(problems))
     return "\n\n".join(parts)
 
 
-def generate(profile, jd, fit=None, temperature=0.4):
+def generate(profile, jd, fit=None, feedback=None, temperature=0.4):
     problems = []
     for _ in range(2):
-        data = ask_json(SYSTEM, _user_prompt(profile, jd, fit, problems), temperature=temperature)
+        data = ask_json(SYSTEM, _user_prompt(profile, jd, fit, problems, feedback), temperature=temperature)
         problems = check_cover_letter(data)
         if not problems:
             break

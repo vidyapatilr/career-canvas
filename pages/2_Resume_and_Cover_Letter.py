@@ -14,11 +14,19 @@ st.markdown("#### Build")
 col1, col2 = st.columns(2)
 
 with col1:
+    resume_feedback = ""
+    if "resume" in st.session_state:
+        resume_feedback = st.text_area(
+            "Anything to fix or change? (optional)",
+            key="resume_feedback",
+            placeholder="e.g. Lead with the TestNG bullet, trim the summary, emphasize Python more",
+            height=80,
+        )
     label = "Regenerate Resume" if "resume" in st.session_state else "Build Resume"
     if st.button(label, type="primary", use_container_width=True, disabled=not (jd and profile)):
         with st.spinner("Writing your resume..."):
             try:
-                data, problems = resume_builder.generate(profile, jd, fit)
+                data, problems = resume_builder.generate(profile, jd, fit, feedback=resume_feedback.strip() or None)
                 company = (fit or {}).get("company") or data.get("company", "")
                 position = (fit or {}).get("position") or data.get("position", "")
                 docx = resume_builder.to_docx(data)
@@ -31,11 +39,19 @@ with col1:
                 st.error(f"Generation failed: {e}")
 
 with col2:
+    cover_feedback = ""
+    if "cover" in st.session_state:
+        cover_feedback = st.text_area(
+            "Anything to fix or change? (optional)",
+            key="cover_feedback",
+            placeholder="e.g. Make the opening paragraph punchier, drop the FindMyTrial mention",
+            height=80,
+        )
     label = "Regenerate Cover Letter" if "cover" in st.session_state else "Build Cover Letter"
     if st.button(label, type="primary", use_container_width=True, disabled=not (jd and profile)):
         with st.spinner("Writing your cover letter..."):
             try:
-                data, problems = cover_letter.generate(profile, jd, fit)
+                data, problems = cover_letter.generate(profile, jd, fit, feedback=cover_feedback.strip() or None)
                 company = (fit or {}).get("company") or data.get("company", "")
                 position = (fit or {}).get("position") or data.get("position", "")
                 docx = cover_letter.to_docx(data, company or "Hiring")

@@ -43,11 +43,13 @@ def education_for(is_healthcare):
     return [e for e in EDUCATION_DEFAULT if "CCRA" not in e]
 
 
-def _user_prompt(profile, jd, fit, problems):
+def _user_prompt(profile, jd, fit, problems, feedback=None):
     parts = [f"MASTER PROFILE:\n{profile}", f"JOB DESCRIPTION:\n{jd}"]
     if fit:
         slim = {k: fit.get(k) for k in ("company", "position", "is_healthcare", "strengths", "gaps", "summary")}
         parts.append(f"FIT REVIEW RESULT:\n{json.dumps(slim, indent=2)}")
+    if feedback:
+        parts.append(f"THE USER ASKED FOR THESE CHANGES TO THE PREVIOUS DRAFT. Apply them:\n{feedback}")
     if problems:
         parts.append(
             "YOUR PREVIOUS DRAFT BROKE THESE RULES. Fix every one:\n- " + "\n- ".join(problems)
@@ -55,11 +57,13 @@ def _user_prompt(profile, jd, fit, problems):
     return "\n\n".join(parts)
 
 
-def generate(profile, jd, fit=None, temperature=0.4):
+def generate(profile, jd, fit=None, feedback=None, temperature=0.4):
     """Return (content dict, problems list). Retries once if the checks fail."""
     problems = []
     for _ in range(2):
-        data = ask_json(SYSTEM, _user_prompt(profile, jd, fit, problems), temperature=temperature, max_tokens=6000)
+        data = ask_json(
+            SYSTEM, _user_prompt(profile, jd, fit, problems, feedback), temperature=temperature, max_tokens=6000
+        )
         if fit and "is_healthcare" in fit:
             data["is_healthcare"] = bool(fit["is_healthcare"])
         data["jobs"] = [j for j in data.get("jobs", []) if not any(x in j.get("title", "") for x in EARLIER_KEYS)]
